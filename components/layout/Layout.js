@@ -1,10 +1,10 @@
+
+import Link from "next/link";
+import { RxDashboard } from "react-icons/rx";
 import { VscListSelection } from "react-icons/vsc";
-import { BiMessageSquareAdd } from "react-icons/bi"
-import { RxDashBoard } from "react-icons/rx"
+import { BiMessageSquareAdd } from "react-icons/bi";
 
-
-
-const Layout = ({ children }) => {
+export default function Layout({ children }) {
     return (
         <div className='container'>
             <header>
@@ -15,21 +15,21 @@ const Layout = ({ children }) => {
                     <p> Welcome </p>
                     <ul>
                         <li>
-                            <VscListSelection />
+                            <RxDashboard/>
                             <Link href="/">
                                 Todos
+                            </Link>
+                        </li>
+                        <li>
+                            <VscListSelection />
+                            <Link href="/add-todo">
+                                Add Todo
                             </Link>
                         </li>
                         <li>
                             <BiMessageSquareAdd />
-                            <Link href="/">
-                                Todos
-                            </Link>
-                        </li>
-                        <li>
-                            <RxDashBoard />
-                            <Link href="/">
-                                Todos
+                            <Link href="/profile">
+                                Profile
                             </Link>
                         </li>
                     </ul>
@@ -42,4 +42,4 @@ const Layout = ({ children }) => {
     )
 }
 
-export default Layout
+

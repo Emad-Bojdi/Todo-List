@@ -29,4 +29,4 @@ async function handler(req, res) {
     return res.status(201).json({ message: "User created successfully", user: newUser });
 }
 
-export default handler
+export default handler;
