@@ -16,4 +16,20 @@ async function handler(req, res){
     }
 
     const user = await User.findOne({email: session.user.email});
+
+    if(!user){
+        return res.status(404).json({status: "failed", message: "User not found"});
+    }
+
+    if(req.method === "POST"){
+        const {title, status} = req.body;
+        if(!title || !status){
+            return res.status(400).json({status: "failed", message: "Title and status are required"});
+        }
+
+        user.todos.push({title, status});
+        user.save();
+
+        return res.status(201).json({status: "success", message: "Todo created successfully"});
+    }
 }
