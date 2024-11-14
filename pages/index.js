@@ -1,10 +1,25 @@
 
+import HomePage from "../components/templates/HomePage"
+import { getSession } from "next-auth/react";
 
 
 export default function Home() {
   return (
     <>
-      <h1> Hi </h1>
+      <HomePage />
     </>
   )
+}
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      }
+    }
+  }
+  return { props: {} }
 }

@@ -1,9 +1,10 @@
 import React from 'react'
+import AddTodo from "../components/templates/AddTodo"
 
-function AddTodo() {
+function addtodo() {
   return (
     <AddTodo/>
   )
 }
 
-export default AddTodo
+export default addtodo

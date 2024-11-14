@@ -47,7 +47,6 @@ const AddTodo = () => {
             </RadioButton>
             <RadioButton status={status} setStatus={setStatus} value="review" title="Review"> 
                 <AiOutlineFileSearch/>
-
             </RadioButton>
             <RadioButton status={status} setStatus={setStatus} value="done" title="Done"> 
                 <MdDoneAll/>
