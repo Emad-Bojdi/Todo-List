@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
+import { Toaster , toast } from "react-hot-toast";
+
 
 const SignUpPage = () => {
     const [email, setEmail] = useState("");
@@ -27,24 +29,33 @@ const SignUpPage = () => {
         })
         const data = await res.json();
         console.log(data);
-        if(data.status === "success") {
+        if(data.status === 201) {
+            toast.success("User created successfully!");
             router.push("/signin");
         }
+        if(data.status === 422){
+            toast.error("Invalid Data or user already exist!")
+        }
+        
     }
 
 
 
-    return (
+    return (<>
         <div className="signin-form">
             <h3 className="">Registration Form</h3>
             <input type='text' placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
             <input type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
             <button onClick={handleSignUp}>Sign Up</button>
-            <div >
-                <p className=""> Have an account?</p>
+            <div>
+                <p className=""> Have an account ?</p>
+                
                 <Link href="/signin">Sign In</Link>
             </div>
+            
         </div>
+        <Toaster/>
+        </>
     )
 }
 

@@ -40,10 +40,14 @@ async function handler(req, res){
     else if(req.method === "PATCH"){
         const {id, status} = req.body;
         if(!id || !status){
-            return res.status(422).json({status: "failed", message: "Id and status are required"});
+            return res.status(422).json({status: 422 ,  message: "Id and status are required"});
         }
-        const result = await User.updateOne({"todos._id": id}, {$set: {"todos.$.status": status}});
-        res.status(200).json({status: "success", message: "Todo updated successfully"});
+        const result = await User.updateOne(
+            { "todos._id": id },
+            { $set: { "todos.$.status": status } }
+          );
+          console.log(result)
+        res.status(200).json({status: 200, message: "Todo updated successfully"});
     }
 }
 

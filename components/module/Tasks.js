@@ -1,9 +1,14 @@
+import { use, useEffect } from "react";
 import { BiRightArrow } from "react-icons/bi";
 import { BiLeftArrow } from "react-icons/bi";
 import { RiMastodonLine } from "react-icons/ri";
 
 
 const Tasks = ({ data , next , back , fetchTodos}) => {
+
+    useEffect(() => {
+        changeStatus();
+    },[])
 
     const changeStatus = async (id, status) => {
         const response = await fetch(`/api/todos`, {

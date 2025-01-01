@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import Tasks from "../module/Tasks"
+import { useRouter } from 'next/router';
 
 const HomePage = () => {
+  const router = useRouter();
     const [todos, setTodos] = useState([]);
 
     useEffect(() => {
@@ -32,7 +34,7 @@ const HomePage = () => {
       </div>
       <div className='home-page--done'>
         <p>Done</p>
-        <Tasks data={todos.done} back="done" fetchTodos={fetchTodos} />
+        <Tasks data={todos.done} back="review" fetchTodos={fetchTodos} />
       </div>
     </div>
   )
