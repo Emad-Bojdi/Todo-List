@@ -23,7 +23,7 @@ const LoginPage = () => {
             password,
             redirect: false,
         });
-        console.log(res)
+        
         if(!res.error){
             toast.success("Login successfully")
             router.push("/");
