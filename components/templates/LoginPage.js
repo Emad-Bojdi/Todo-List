@@ -17,7 +17,8 @@ const LoginPage = () => {
             router.push("/");
         }
     }, [status]);
-    const loginHandler = async () => {
+    const loginHandler = async (e) => {
+        e.preventDefault();
         const res = await signIn("credentials", {
             email,
             password,

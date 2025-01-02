@@ -19,7 +19,8 @@ const SignUpPage = () => {
         }
     }, [status]);
 
-    const handleSignUp = async () => {
+    const handleSignUp = async (e) => {
+        e.preventDefault();
         const res = await fetch("/api/auth/signup", {
             method: "POST",
             body: JSON.stringify({ email, password }),
