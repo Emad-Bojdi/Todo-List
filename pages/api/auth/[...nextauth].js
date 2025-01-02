@@ -14,18 +14,37 @@ export const authOptions = {
             async authorize(credentials, req) {
                 const { email, password } = credentials;
                 try {
-                    await connectDB();
+                    try {
+                        await connectDB();
+                    } catch (error) {
+                        throw new Error("Failed to connect to database");
+                    }
+                    const user = await User.findOne({ email });
+                    if (!user) throw new Error("Invalid credentials");
+                    const isValid = await verifyPassword(password, user.password);
+                    if (!isValid) throw new Error("Invalid credentials");
+                    return { id:user._id, email: user.email };
                 } catch (error) {
-                    throw new Error("Failed to connect to database");
+                    console.error("Auth error:", error);
+                    throw new Error(error.message || "Authentication failed");
                 }
-                const user = await User.findOne({ email });
-                if (!user) throw new Error("Invalid credentials");
-                const isValid = await verifyPassword(password, user.password);
-                if (!isValid) throw new Error("Invalid credentials");
-                return {email};
             }
         })
-    ]
+    ],
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (token) {
+                session.user.id = token.id;
+            }
+            return session;
+        }
+    }
 }
 
 export default NextAuth(authOptions);

@@ -20,16 +20,16 @@ const LoginPage = () => {
     const loginHandler = async (e) => {
         e.preventDefault();
         const res = await signIn("credentials", {
-            email,
-            password,
+            email : email,
+            password : password,
             redirect: false,
         });
-        
-        if(!res.error){
+        console.log(res)
+        if(res.ok){
             toast.success("Login successfully")
             router.push("/");
         }
-        if(res.status === 401){
+        if(res.error){
             toast.error("Invalid credentials")
         }
     }
