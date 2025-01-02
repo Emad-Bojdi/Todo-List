@@ -6,9 +6,6 @@ import { RiMastodonLine } from "react-icons/ri";
 
 const Tasks = ({ data , next , back , fetchTodos}) => {
 
-    useEffect(() => {
-        changeStatus();
-    },[])
 
     const changeStatus = async (id, status) => {
         const response = await fetch(`/api/todos`, {

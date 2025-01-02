@@ -36,7 +36,7 @@ const ProfilePage = () => {
             setName("");
             setLastName("");
             setPassword("");
-            toast.success("Todo Added Successfully");
+            toast.success(" Your information submitted successfully!");
         }
     }
     return (

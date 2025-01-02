@@ -3,7 +3,7 @@ import Tasks from "../module/Tasks"
 import { useRouter } from 'next/router';
 
 const HomePage = () => {
-  const router = useRouter();
+  
     const [todos, setTodos] = useState([]);
 
     useEffect(() => {
