@@ -1,27 +1,49 @@
+import { use, useEffect } from "react"
 
 
-const ProfileForm = ({ name, lastName, password, setName, setLastName, setPassword, submitHandler }) => {
+const ProfileForm = ({
+    data,
+    name,
+    lastName,
+    password,
+    setName,
+    setLastName,
+    setPassword,
+    onSubmit,
+    isEdit
+}) => {
     return (
-        <>
-            <div className="profile-form__input">
-                <div>
-                    <label htmlFor="name">Name:</label>
-                    <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
-                </div>
-                <div>
-                    <label htmlFor="lastName">Last Name:</label>
-                    <input id="lastName" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <input id="password" type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>
+        <div className="profile-form__input">
+            <div>
+                <label>Name:</label>
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
             </div>
-            <button onClick={submitHandler}>
-                Submit
+            <div>
+                <label>Last Name:</label>
+                <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                />
+            </div>
+            <div>
+                <label>Password:</label>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                />
+            </div>
+            <button onClick={onSubmit}>
+                {isEdit ? "Update Profile" : "Create Profile"}
             </button>
-        </>
-    )
-}
+        </div>
+    );
+};
 
-export default ProfileForm
+export default ProfileForm;

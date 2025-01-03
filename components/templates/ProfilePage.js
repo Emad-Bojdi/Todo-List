@@ -20,9 +20,11 @@ const ProfilePage = () => {
         try {
             const res = await fetch("/api/profile");
             const result = await res.json();
-            
+
             if (result.status === "success") {
                 setData(result.data);
+                if (result.data.name) setName(result.data.name);
+                if (result.data.lastName) setLastName(result.data.lastName);
             } else {
                 toast.error(result.message || "Failed to fetch profile");
             }
@@ -43,17 +45,39 @@ const ProfilePage = () => {
                     "Content-Type": "application/json"
                 }
             });
-            
+
             const result = await res.json();
-            
+
             if (result.status === "success") {
-                setName("");
-                setLastName("");
-                setPassword("");
                 setData(result.data);
-                toast.success("Your information submitted successfully!");
+                setPassword("");
+                toast.success("Profile created successfully!");
             } else {
-                toast.error(result.message || "Failed to update profile");
+                toast.error(result.message || "Failed to create profile");
+            }
+        } catch (error) {
+            console.error("Profile creation error:", error);
+            toast.error("Failed to create profile");
+        }
+    }
+
+    const editHandler = async () => {
+        try {
+            const res = await fetch("/api/profile", {
+                method: "PATCH",
+                body: JSON.stringify({ name, lastName, password }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const response = await res.json();
+            if (response.status === "success") {
+                setData(response.data);
+                setPassword("");
+                toast.success("Profile updated successfully!");
+            } else {
+                toast.error(response.message || "Failed to update profile");
             }
         } catch (error) {
             console.error("Profile update error:", error);
@@ -65,25 +89,27 @@ const ProfilePage = () => {
         return <div>Loading...</div>;
     }
 
+    const handleSubmit = data?.name || data?.lastName ? editHandler : submitHandler;
+
     return (
         <div className="profile-form">
             <h2>
                 <CgProfile />
                 Profile
             </h2>
-            {data && (data.name || data.lastName) ? (
-                <ProfileData data={data} />
-            ) : (
-                <ProfileForm 
-                    name={name}
-                    lastName={lastName}
-                    password={password}
-                    setName={setName}
-                    setLastName={setLastName}
-                    setPassword={setPassword}
-                    submitHandler={submitHandler}
-                />
-            )}
+
+            <ProfileForm
+                data={data}
+                name={name}
+                lastName={lastName}
+                password={password}
+                setName={setName}
+                setLastName={setLastName}
+                setPassword={setPassword}
+                onSubmit={handleSubmit}
+                isEdit={!!(data?.name || data?.lastName)}
+            />
+
             <ToastContainer />
         </div>
     );

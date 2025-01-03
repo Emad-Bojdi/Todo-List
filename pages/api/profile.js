@@ -55,9 +55,21 @@ async function handler(req, res) {
         const isValid = await verifyPassword(password, user.password);
 
         if (!isValid) {
-            return res.status(401).json({ status: " failed", message: "Invalid password" });
+            return res.status(401).json({ status: " failed", message: "Invalid password!" });
         }
-        
+        if(!name || !lastName) {
+            return res.status(400).json({status: "failed" , message: "Please fill all sections!"});
+        }
+
+        user.name = name;
+        user.lastName = lastName;
+        await user.save();
+
+        res.status(200).json({
+            status: "success",
+            message: "Profile updated successfully",
+            data: { name, lastName, email: session.user.email }
+        });
     }
 }
 
