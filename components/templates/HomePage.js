@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import Tasks from "../module/Tasks"
+import { redirect } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 
 const HomePage = () => {
   
     const [todos, setTodos] = useState([]);
-
+  const router = useRouter();
     useEffect(() => {
         fetchTodos();
     }, []);
@@ -13,7 +14,10 @@ const HomePage = () => {
     const fetchTodos = async () => {
         const response = await fetch("/api/todos");
         const data = await response.json();
-       
+        console.log(data);
+        if(data.status === "failed"){
+          router.push("/signin")
+        }
         if(data.status === "success"){
             setTodos(data.data.todos);
         }

@@ -1,7 +1,8 @@
 import User from "../../models/User";
 import connectDB from "../../utils/connectDB";
 import { verifyPassword } from "../../utils/auth";
-import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth";
+import { authOptions } from "./auth/[...nextauth]";
 
 async function handler(req, res) {
     try {
@@ -10,7 +11,8 @@ async function handler(req, res) {
         return res.status(500).json({ status: "failed", message: "Error in connecting to DB" });
     }
 
-    const session = await getSession({ req });
+    const session = await getServerSession(req, res, authOptions);
+
     if (!session) {
         return res.status(401).json({ status: "failed", message: "Unauthorized" });
     }
@@ -30,11 +32,32 @@ async function handler(req, res) {
 
         user.name = name;
         user.lastName = lastName;
-        user.save();
-        res.status(200).json({ status: "success", message: "Profile updated successfully", data: { name, lastName, email: session.user.email } });
+        await user.save();
+
+        res.status(200).json({
+            status: "success",
+            message: "Profile updated successfully",
+            data: { name, lastName, email: session.user.email }
+        });
     }
-    if(req.method === "GET") {
-        res.status(200).json({ status:"success" , data:{ name: user.name, lastName: user.lastName , email: user.email}})
+    else if (req.method === "GET") {
+        res.status(200).json({
+            status: "success",
+            data: {
+                name: user.name || "",
+                lastName: user.lastName || "",
+                email: user.email
+            }
+        });
+    }
+    else if (req.method === "PATCH") {
+        const { name, lastName, password } = req.body;
+        const isValid = await verifyPassword(password, user.password);
+
+        if (!isValid) {
+            return res.status(401).json({ status: " failed", message: "Invalid password" });
+        }
+        
     }
 }
 

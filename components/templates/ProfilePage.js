@@ -9,49 +9,84 @@ const ProfilePage = () => {
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
-    const [data, setData] = useState("");
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchProfile();
     }, []);
 
     const fetchProfile = async () => {
-        const res = await fetch("/api/profile");
-        const data = await res.json();
-        if (data.status === "success" && data.data.name && data.data.lastName) {
-            setData(data.data)
+        try {
+            const res = await fetch("/api/profile");
+            const result = await res.json();
+            
+            if (result.status === "success") {
+                setData(result.data);
+            } else {
+                toast.error(result.message || "Failed to fetch profile");
+            }
+        } catch (error) {
+            console.error("Profile fetch error:", error);
+            toast.error("Failed to load profile");
+        } finally {
+            setLoading(false);
         }
     }
 
     const submitHandler = async () => {
-        const res = await fetch("/api/profile", {
-            method: "POST",
-            body: JSON.stringify({ name, lastName, password }),
-            headers: {
-                "Content-Type": "application/json"
+        try {
+            const res = await fetch("/api/profile", {
+                method: "POST",
+                body: JSON.stringify({ name, lastName, password }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            
+            const result = await res.json();
+            
+            if (result.status === "success") {
+                setName("");
+                setLastName("");
+                setPassword("");
+                setData(result.data);
+                toast.success("Your information submitted successfully!");
+            } else {
+                toast.error(result.message || "Failed to update profile");
             }
-        });
-        const data = await res.json();
-        if (data.status === "success") {
-            setName("");
-            setLastName("");
-            setPassword("");
-            toast.success(" Your information submitted successfully!");
+        } catch (error) {
+            console.error("Profile update error:", error);
+            toast.error("Failed to update profile");
         }
     }
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="profile-form">
             <h2>
                 <CgProfile />
-                Profile </h2>
-            {
-                data ? <ProfileData data={data}/> : (
-                    <ProfileForm name={name} lastName={lastName} password={password} setName={setName} setLastName={setLastName} setPassword={setPassword} submitHandler={submitHandler} />
-                )
-            }
+                Profile
+            </h2>
+            {data && (data.name || data.lastName) ? (
+                <ProfileData data={data} />
+            ) : (
+                <ProfileForm 
+                    name={name}
+                    lastName={lastName}
+                    password={password}
+                    setName={setName}
+                    setLastName={setLastName}
+                    setPassword={setPassword}
+                    submitHandler={submitHandler}
+                />
+            )}
             <ToastContainer />
         </div>
-    )
+    );
 }
 
-export default ProfilePage
+export default ProfilePage;

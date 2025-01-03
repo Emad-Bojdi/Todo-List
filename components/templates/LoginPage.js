@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { signIn, useSession } from 'next-auth/react';
 
 import { Toaster , toast } from 'react-hot-toast';
-import { redirect } from 'next/dist/server/api-utils';
+
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -26,11 +26,11 @@ const LoginPage = () => {
             redirect: false,
         });
         console.log(res)
-        if(res?.ok){
+        if(!res.error){
             toast.success("Login successfully");
             await router.replace("/");
         }
-        if(res?.error){
+        if(res.error){
             toast.error("Invalid credentials")
         }
     }
@@ -42,7 +42,7 @@ const LoginPage = () => {
             <button onClick={loginHandler}>Login</button>
             <div >
                 <p className=""> Create an account ?</p>
-                <Link href="/signup">Sign Up</Link>
+                <Link href="/signup" >Sign Up</Link>
             </div>
         </div>
         <Toaster/>

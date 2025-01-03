@@ -1,13 +1,12 @@
-function sortData(todos){
-    const sortedTodos = {};
-
+function sortTodos(todos) {
+    const sortedData = {};
     todos.map((todo) => {
-        if(!sortedTodos[todo.status]) sortedTodos[todo.status] = [];
-
-        sortedTodos[todo.status].push(todo)
+      if (!sortedData[todo.status]) sortedData[todo.status] = [];
+  
+      sortedData[todo.status].push(todo);
     });
-    return sortedTodos;
-
-}
-
-export {sortData};
+  
+    return sortedData;
+  }
+  
+  export { sortTodos };

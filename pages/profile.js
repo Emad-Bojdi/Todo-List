@@ -1,10 +1,12 @@
 import React from 'react'
 import ProfilePage from '../components/templates/ProfilePage'
 
-const Profile = () => {
+
+const Profile =() => {
+
   return (
     <>
-    <ProfilePage/>
+      <ProfilePage />
     </>
   )
 }
