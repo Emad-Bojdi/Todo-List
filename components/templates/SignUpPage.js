@@ -19,26 +19,27 @@ const SignUpPage = () => {
         }
     }, [status]);
 
-    const handleSignUp = async (e) => {
-        e.preventDefault();
-        const res = await fetch("/api/auth/signup", {
-            method: "POST",
-            body: JSON.stringify({ email, password }),
-            headers: {
-                "Content-Type": "application/json"
+    const signupHandler = async () => {
+        try {
+            const res = await fetch("/api/auth/signup", {
+                method: "POST",
+                body: JSON.stringify({ email, password }),
+                headers: { "Content-Type": "application/json" },
+            });
+
+            const data = await res.json();
+
+            if (data.status === 201) {
+                toast.success("Account created successfully!");
+                router.push("/signin");
+            } else {
+                toast.error(data.message || "Something went wrong!");
             }
-        })
-        const data = await res.json();
-        
-        if(data.status === 201) {
-            toast.success("User created successfully!");
-            router.push("/signin");
+        } catch (error) {
+            console.error("Signup error:", error);
+            toast.error("Failed to create account. Please try again.");
         }
-        if(data.status === 422){
-            toast.error("Invalid Data or user already exist!")
-        }
-        
-    }
+    };
 
 
 
@@ -47,7 +48,7 @@ const SignUpPage = () => {
             <h3 className="">Registration Form</h3>
             <input type='text' placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
             <input type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
-            <button onClick={handleSignUp}>Sign Up</button>
+            <button onClick={signupHandler}>Sign Up</button>
             <div>
                 <p className=""> Have an account ?</p>
                 

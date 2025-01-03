@@ -76,6 +76,9 @@ async function handler(req, res) {
     console.log(result);
     res.status(200).json({ status: 200});
   }
+  else if (req.method === "DELETE"){
+    
+  }
 }
 
 export default handler;
