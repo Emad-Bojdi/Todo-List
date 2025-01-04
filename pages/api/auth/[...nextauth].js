@@ -22,7 +22,7 @@ export const authOptions = {
           throw new Error("Invalid Data!");
         }
 
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ email });
 
         if (!user) throw new Error("User doesn't exist!");
 
