@@ -1,6 +1,6 @@
 import mongoose, { model, Schema , models } from "mongoose";
 
-const userSchema = new Schema({
+const todoUserSchema = new Schema({
     email:{
         type:String,
         required:true,
@@ -22,7 +22,7 @@ const userSchema = new Schema({
     }
 })
 
-const User =models.User ||  model("User",userSchema);
+const User =models.User ||  model("User",todoUserSchema);
 
 
 export default User
