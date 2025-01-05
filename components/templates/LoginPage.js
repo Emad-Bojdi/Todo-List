@@ -30,7 +30,7 @@ const LoginPage = () => {
         console.log(res)
         if(!res.error){
             toast.success("Login successfully");
-            await router.replace("/");
+            router.replace("/");
         }
         if(res.error){
             toast.error("Invalid credentials")
